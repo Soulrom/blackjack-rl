@@ -41,7 +41,7 @@ Place bets, manage your balance, and try to beat the house — all from your ter
 ### Installation
 
 ```bash
-git clone https://github.com/RomanMokrii/playing-with-cards.git
+git clone https://github.com/Soulrom/playing-with-cards.git
 cd playing-with-cards
 ```
 
