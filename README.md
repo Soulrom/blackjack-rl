@@ -1,28 +1,53 @@
-# 🃏 Playing With Cards
+```
+██████╗ ██╗      █████╗ ██╗   ██╗██╗███╗   ██╗ ██████╗
+██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██║████╗  ██║██╔════╝
+██████╔╝██║     ███████║ ╚████╔╝ ██║██╔██╗ ██║██║  ███╗
+██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██║██║╚██╗██║██║   ██║
+██║     ███████╗██║  ██║   ██║   ██║██║ ╚████║╚██████╔╝
+╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝
 
-> A CLI Blackjack game written in Python. Future plans include an AI dealer powered by reinforcement learning.
+        ██╗    ██╗██╗████████╗██╗  ██╗     ██████╗ █████╗ ██████╗ ██████╗ ███████╗
+        ██║    ██║██║╚══██╔══╝██║  ██║    ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝
+        ██║ █╗ ██║██║   ██║   ███████║    ██║     ███████║██████╔╝██║  ██║███████╗
+        ██║███╗██║██║   ██║   ██╔══██║    ██║     ██╔══██║██╔══██╗██║  ██║╚════██║
+        ╚███╔███╔╝██║   ██║   ██║  ██║    ╚██████╗██║  ██║██║  ██║██████╔╝███████║
+         ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝
+```
 
-![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
 
----
+*A CLI Blackjack game written in Python. Future plans include an AI dealer powered by reinforcement learning.*
 
-## 🎮 About
-
-**Playing With Cards** is a terminal-based Blackjack game where you play against a dealer. Place bets, manage your balance, and try to beat the house — all from your terminal.
+</div>
 
 ---
 
-## 🚀 Getting Started
+## 📖 About
+
+**Playing With Cards** is a terminal-based Blackjack game where you play against a dealer.
+Place bets, manage your balance, and try to beat the house — all from your terminal.
+
+---
+
+## ⚙️ Getting Started
 
 ### Prerequisites
 - Python 3.11+
 
-### Run the game
+### Installation
+
 ```bash
-git clone https://github.com/your-username/playing-with-cards.git
+git clone https://github.com/RomanMokrii/playing-with-cards.git
 cd playing-with-cards
+```
+
+### Run
+
+```bash
 python main.py
 ```
 
@@ -32,16 +57,19 @@ python main.py
 
 1. Enter your name
 2. Place a bet
-3. Choose `hit` (take a card) or `stand` (stop)
+3. Choose your action:
+   - `hit` — take another card
+   - `stand` — stop and let the dealer play
 4. Try to get closer to **21** than the dealer without going over
-5. Dealer draws until score ≥ 17
+5. Dealer draws cards until score ≥ 17
 
 ### Payouts
+
 | Result | Payout |
 |--------|--------|
-| Win | x1 |
-| Blackjack (21 from 2 cards) | x1.5 |
-| Lose | -bet |
+| Win | +bet |
+| Blackjack (21 from 2 cards) | +bet × 1.5 |
+| Lose | −bet |
 | Draw | bet returned |
 
 ---
@@ -50,8 +78,8 @@ python main.py
 
 ```
 playing_with_cards/
-├── main.py       # CLI interface
-├── game.py       # Game logic
+├── main.py       # CLI interface & game loop
+├── game.py       # Core game logic
 ├── deck.py       # Card and Deck classes
 ├── player.py     # Player class
 └── dealer.py     # Dealer class
@@ -61,16 +89,18 @@ playing_with_cards/
 
 ## 🛣️ Roadmap
 
-- [x] Project structure
-- [ ] Deck and Card classes
+- [x] Project setup
+- [ ] Deck & Card classes
 - [ ] Player logic
 - [ ] Dealer logic
 - [ ] Game loop
 - [ ] CLI interface
-- [ ] AI dealer powered by Reinforcement Learning
+- [ ] AI dealer via Reinforcement Learning
 
 ---
 
 ## 📄 License
 
-MIT © Soulrom
+Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
+
+© 2026 Roman Mokrii
