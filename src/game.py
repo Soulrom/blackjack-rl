@@ -1,12 +1,21 @@
 from deck import Deck
 from dealer import Dealer
+from ai_dealer import AIDealer
 
 
 class Game:
-    def __init__(self, player):
+    def __init__(self, player, use_ai=False):
         self.player = player
         self.deck = Deck()
-        self.dealer = Dealer()
+
+        if use_ai:
+            self.dealer = AIDealer()
+            try:
+                self.dealer.load("../models/q_table.json")
+            except FileNotFoundError:
+                print("Warning: q_table.json not found. Run train.py first!")
+        else:
+            self.dealer = Dealer()
 
     def start_round(self):
         self.deck.shuffle()
@@ -17,7 +26,23 @@ class Game:
         self.dealer.add_card(self.deck.deal())
         self.dealer.hidden_card = self.deck.deal()
 
-    def player_turn(self):
+    def check_blackjack(self) -> bool:
+        player_blackjack = self.player.get_score() == 21 and len(self.player.hand) == 2
+        dealer_blackjack = self.dealer.get_score() == 21 and len(self.dealer.hand) == 2
+
+        if player_blackjack and dealer_blackjack:
+            self.dealer.reveal()
+            print("Both have Blackjack! Draw!")
+            self.player.win(0)
+            return True
+        elif player_blackjack:
+            self.dealer.reveal()
+            print("Blackjack! You win x1.5!")
+            self.player.win(1.5)
+            return True
+        return False
+
+    def player_turn(self) -> bool:
         while True:
             print(f"Your hand: {[str(card) for card in self.player.hand]}")
             print(f"Score: {self.player.get_score()}")
@@ -28,19 +53,19 @@ class Game:
             if action == "h":
                 self.player.add_card(self.deck.deal())
                 if self.player.get_score() > 21:
-                    print("Bust! You Lose.")
+                    print("Bust! You lose!")
                     print(f"Score: {self.player.get_score()}")
-                    break
+                    return True
             elif action == "s":
-                break
+                return False
+            else:
+                print("Invalid input. Enter 'h' or 's'.")
 
     def dealer_turn(self):
         self.dealer.reveal()
         print(f"Dealer hand: {[str(card) for card in self.dealer.hand]}")
 
-        while self.dealer.should_hit():
-            self.dealer.add_card(self.deck.deal())
-            print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
+        self.dealer.take_turn(self.deck, self.player.get_score())
 
     def resolve(self):
         player_score = self.player.get_score()
@@ -51,9 +76,6 @@ class Game:
         elif dealer_score > 21:
             print("You win!")
             self.player.win(1)
-        elif player_score == 21 and len(self.player.hand) == 2:
-            print("Blackjack! You win x1.5!")
-            self.player.win(1.5)
         elif player_score > dealer_score:
             print("You win!")
             self.player.win(1)
@@ -61,4 +83,4 @@ class Game:
             print("You lose!")
         else:
             print("Draw!")
-            self.player.win(1)
+            self.player.win(0)

@@ -1,31 +1,23 @@
-class Dealer:
+from hand import Hand
+
+
+class Dealer(Hand):
     def __init__(self):
-        self.hand = []
+        super().__init__()
         self.hidden_card = None
 
-    def add_card(self, card):
-        self.hand.append(card)
-
     def clear_hand(self):
-        self.hand = []
-
-    def get_score(self):
-        score = 0
-        aces = 0
-
-        for card in self.hand:
-            score += card.get_numeric_value()
-            if card.value == "A":
-                aces += 1
-
-        while score > 21 and aces > 0:
-            score -= 10
-            aces -= 1
-
-        return score
+        super().clear_hand()
+        self.hidden_card = None
 
     def reveal(self):
-        self.hand.append(self.hidden_card)
+        if self.hidden_card is not None:
+            self.hand.append(self.hidden_card)
 
     def should_hit(self):
         return self.get_score() < 17
+
+    def take_turn(self, deck, _player_score):
+        while self.should_hit():
+            self.add_card(deck.deal())
+            print(f"Dealer draws: {[str(card) for card in self.hand]}")
