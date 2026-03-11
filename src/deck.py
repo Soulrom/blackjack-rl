@@ -1,3 +1,5 @@
+import random
+
 SUITS = ['♠', '♥', '♦', '♣']
 VALUES = [
     '2', '3', '4',
@@ -21,3 +23,16 @@ class Card:
             return 11
         else:
             return int(self.value)
+        
+class Deck:
+    def __init__(self):
+        self.cards = []
+        for suit in SUITS:
+            for value in VALUES:
+                self.cards.append(Card(suit, value))
+
+    def shuffle(self):
+        random.shuffle(self.cards)
+
+    def deal(self):
+        return self.cards.pop()
