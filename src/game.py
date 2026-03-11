@@ -1,6 +1,7 @@
 from deck import Deck
 from dealer import Dealer
 
+
 class Game:
     def __init__(self, player):
         self.player = player
@@ -15,7 +16,7 @@ class Game:
         self.player.add_card(self.deck.deal())
         self.dealer.add_card(self.deck.deal())
         self.dealer.hidden_card = self.deck.deal()
-    
+
     def player_turn(self):
         while True:
             print(f"Your hand: {[str(card) for card in self.player.hand]}")
@@ -24,15 +25,15 @@ class Game:
 
             action = input("Hit or Stand? (h/s): ").lower()
 
-            if action == 'h':
+            if action == "h":
                 self.player.add_card(self.deck.deal())
                 if self.player.get_score() > 21:
                     print("Bust! You Lose.")
                     print(f"Score: {self.player.get_score()}")
                     break
-            elif action == 's':
+            elif action == "s":
                 break
-    
+
     def dealer_turn(self):
         self.dealer.reveal()
         print(f"Dealer hand: {[str(card) for card in self.dealer.hand]}")
@@ -40,7 +41,7 @@ class Game:
         while self.dealer.should_hit():
             self.dealer.add_card(self.deck.deal())
             print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
-    
+
     def resolve(self):
         player_score = self.player.get_score()
         dealer_score = self.dealer.get_score()
@@ -60,4 +61,4 @@ class Game:
             print("You lose!")
         else:
             print("Draw!")
-            self.player.win(1) 
+            self.player.win(1)

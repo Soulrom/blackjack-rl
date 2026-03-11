@@ -1,5 +1,6 @@
 import sys
-sys.stdout.reconfigure(encoding='utf-8')
+
+sys.stdout.reconfigure(encoding="utf-8")
 
 from player import Player
 from game import Game
@@ -28,8 +29,9 @@ def main():
             break
 
         again = input("Play again? (y/n): ").lower()
-        if again != 'y':
+        if again != "y":
             break
+
 
 if __name__ == "__main__":
     main()
