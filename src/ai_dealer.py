@@ -1,5 +1,6 @@
 import random
 import json
+import ast
 
 from dealer import Dealer
 
@@ -52,4 +53,4 @@ class AIDealer(Dealer):
     def load(self, path):
         with open(path, "r") as f:
             data = json.load(f)
-            self.q_table = {eval(k): v for k, v in data.items()}
+            self.q_table = {ast.literal_eval(k): v for k, v in data.items()}

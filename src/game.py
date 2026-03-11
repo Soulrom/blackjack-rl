@@ -10,7 +10,10 @@ class Game:
 
         if use_ai:
             self.dealer = AIDealer()
-            self.dealer.load("../models/q_table.json")
+            try:
+                self.dealer.load("../models/q_table.json")
+            except FileNotFoundError:
+                print("Warning: q_table.json not found. Run train.py first!")
         else:
             self.dealer = Dealer()
 
@@ -39,6 +42,8 @@ class Game:
                     break
             elif action == "s":
                 break
+            else:
+                print("Invalid input. Enter 'h' or 's'.")
 
     def dealer_turn(self):
         self.dealer.reveal()
@@ -66,7 +71,11 @@ class Game:
         elif dealer_score > 21:
             print("You win!")
             self.player.win(1)
-        elif player_score == 21 and len(self.player.hand) == 2:
+        elif (
+            player_score == 21
+            and len(self.player.hand) == 2
+            and not (self.dealer.get_score() == 21 and len(self.dealer.hand) == 2)
+        ):
             print("Blackjack! You win x1.5!")
             self.player.win(1.5)
         elif player_score > dealer_score:

@@ -25,7 +25,8 @@ class Dealer:
         return score
 
     def reveal(self):
-        self.hand.append(self.hidden_card)
+        if self.hidden_card is not None:
+            self.hand.append(self.hidden_card)
 
     def should_hit(self):
         return self.get_score() < 17

@@ -15,7 +15,18 @@ def main():
     while True:
         print(f"\nBalance: ${player.balance}")
 
-        bet = int(input("Place your bet: "))
+        while True:
+            try:
+                bet = int(input("Place your bet: "))
+                if bet <= 0:
+                    print("bet must be greater than 0.")
+                elif bet > player.balance:
+                    print(f"Not enough balance. Max bet: ${player.balance}")
+                else:
+                    break
+            except ValueError:
+                print("Invalid input. Enter a number.")
+
         player.place_bet(bet)
 
         game = Game(player)

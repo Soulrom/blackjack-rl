@@ -1,3 +1,5 @@
+import os
+
 from deck import Deck
 from player import Player
 from ai_dealer import AIDealer
@@ -17,6 +19,7 @@ def train(episodes=10_000_000):
         ai.clear_hand()
         ai.add_card(deck.deal())
         ai.hidden_card = deck.deal()
+        ai.reveal()
 
         state = ai.get_state(player.get_score())
 
@@ -48,6 +51,7 @@ def train(episodes=10_000_000):
             state = next_state
         ai.decay_epsilon()
 
+    os.makedirs("../models", exist_ok=True)
     ai.save("../models/q_table.json")
     print(f"Training complete! States learned: {len(ai.q_table)}")
 
