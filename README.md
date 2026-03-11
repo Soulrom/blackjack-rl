@@ -85,6 +85,20 @@ python main.py
 
 ---
 
+## Dealer Modes
+
+The game supports two dealer modes, configurable in `main.py`:
+
+```python
+# AI dealer — uses trained Q-table
+game = Game(player, use_ai=True)
+
+# Classic dealer — hits until score ≥ 17
+game = Game(player)
+```
+
+---
+
 ## AI Dealer
 
 The dealer is powered by **Q-learning** — a model-free reinforcement learning algorithm. During training, the agent plays millions of games and learns which actions (hit or stand) maximize its long-term reward.
