@@ -12,8 +12,8 @@ class AIDealer(Dealer):
         self.alpha = 0.1
         self.gamma = 0.9
         self.epsilon = 1.0
-        self.epsilon_min = 0.1
-        self.epsilon_decay = 0.995
+        self.epsilon_min = 0.05
+        self.epsilon_decay = 0.999997
 
     def get_state(self, player_score):
         has_ace = any(card.value == "A" for card in self.hand)

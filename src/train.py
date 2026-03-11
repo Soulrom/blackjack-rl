@@ -1,11 +1,11 @@
 import os
-
+import random
 from deck import Deck
 from player import Player
 from ai_dealer import AIDealer
 
 
-def train(episodes=10_000_000):
+def train(episodes=2_000_000):
     ai = AIDealer()
     player = Player("AI_opponent", 0)
 
@@ -19,6 +19,9 @@ def train(episodes=10_000_000):
 
         player.add_card(deck.deal())
         player.add_card(deck.deal())
+
+        while player.get_score() < random.randint(15, 21):
+            player.add_card(deck.deal())
 
         ai.clear_hand()
         ai.add_card(deck.deal())

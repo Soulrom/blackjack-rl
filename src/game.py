@@ -26,6 +26,22 @@ class Game:
         self.dealer.add_card(self.deck.deal())
         self.dealer.hidden_card = self.deck.deal()
 
+    def check_blackjack(self) -> bool:
+        player_blackjack = self.player.get_score() == 21 and len(self.player.hand) == 2
+        dealer_blackjack = self.dealer.get_score() == 21 and len(self.dealer.hand) == 2
+
+        if player_blackjack and dealer_blackjack:
+            self.dealer.reveal()
+            print("Both have Blackjack! Draw!")
+            self.player.win(0)
+            return True
+        elif player_blackjack:
+            self.dealer.reveal()
+            print("Blackjack! You win x1.5!")
+            self.player.win(1.5)
+            return True
+        return False
+
     def player_turn(self) -> bool:
         while True:
             print(f"Your hand: {[str(card) for card in self.player.hand]}")
@@ -60,13 +76,6 @@ class Game:
         elif dealer_score > 21:
             print("You win!")
             self.player.win(1)
-        elif (
-            player_score == 21
-            and len(self.player.hand) == 2
-            and not (dealer_score == 21 and len(self.dealer.hand) == 2)
-        ):
-            print("Blackjack! You win x1.5!")
-            self.player.win(1.5)
         elif player_score > dealer_score:
             print("You win!")
             self.player.win(1)

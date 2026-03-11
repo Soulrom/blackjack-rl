@@ -29,12 +29,13 @@ def main():
 
         player.place_bet(bet)
 
-        game = Game(player)
+        game = Game(player, use_ai=True)  # player, use_ai=True
         game.start_round()
-        busted = game.player_turn()
-        if not busted:
-            game.dealer_turn()
-        game.resolve()
+        if not game.check_blackjack():
+            busted = game.player_turn()
+            if not busted:
+                game.dealer_turn()
+            game.resolve()
 
         if player.balance <= 0:
             print("Game over! No balance left.")
