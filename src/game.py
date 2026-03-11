@@ -1,12 +1,18 @@
 from deck import Deck
 from dealer import Dealer
+from ai_dealer import AIDealer
 
 
 class Game:
-    def __init__(self, player):
+    def __init__(self, player, use_ai=False):
         self.player = player
         self.deck = Deck()
-        self.dealer = Dealer()
+
+        if use_ai:
+            self.dealer = AIDealer()
+            self.dealer.load("../models/q_table.json")
+        else:
+            self.dealer = Dealer()
 
     def start_round(self):
         self.deck.shuffle()
@@ -38,9 +44,18 @@ class Game:
         self.dealer.reveal()
         print(f"Dealer hand: {[str(card) for card in self.dealer.hand]}")
 
-        while self.dealer.should_hit():
-            self.dealer.add_card(self.deck.deal())
-            print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
+        if isinstance(self.dealer, AIDealer):
+            while True:
+                state = self.dealer.get_state(self.player.get_score())
+                action = self.dealer.choose_action(state)
+                if action == 0:
+                    break
+                self.dealer.add_card(self.deck.deal())
+                print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
+        else:
+            while self.dealer.should_hit():
+                self.dealer.add_card(self.deck.deal())
+                print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
 
     def resolve(self):
         player_score = self.player.get_score()
@@ -61,4 +76,4 @@ class Game:
             print("You lose!")
         else:
             print("Draw!")
-            self.player.win(1)
+            self.player.win(0)

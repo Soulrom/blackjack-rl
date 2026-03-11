@@ -3,27 +3,28 @@ import json
 
 from dealer import Dealer
 
+
 class AIDealer(Dealer):
     def __init__(self):
+        super().__init__()
         self.q_table = {}
         self.alpha = 0.1
         self.gamma = 0.9
         self.epsilon = 1.0
         self.epsilon_min = 0.1
         self.epsilon_decay = 0.995
-        super().__init__()
 
     def get_state(self, player_score):
-        has_ace = any(card.value == 'A' for card in self.hand)
+        has_ace = any(card.value == "A" for card in self.hand)
         return (self.get_score(), player_score, has_ace)
 
     def choose_action(self, state):
         if random.random() < self.epsilon:
-            return random.choice([0,1])
+            return random.choice([0, 1])
         if state in self.q_table:
             return max(self.q_table[state], key=self.q_table[state].get)
-        return random.choice([0,1])
-    
+        return random.choice([0, 1])
+
     def update(self, state, action, reward, next_state):
         # if the state is not in the table, create {0: 0.0, 1: 0.0}
         if state not in self.q_table:
@@ -37,16 +38,18 @@ class AIDealer(Dealer):
 
         # update according to the formula
         current = self.q_table[state][action]
-        self.q_table[state][action] = self.q_table[state][action] + self.alpha * (reward + self.gamma * next_max - current)
+        self.q_table[state][action] = self.q_table[state][action] + self.alpha * (
+            reward + self.gamma * next_max - current
+        )
 
     def decay_epsilon(self):
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
 
     def save(self, path):
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             json.dump({str(k): v for k, v in self.q_table.items()}, f)
-    
+
     def load(self, path):
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             data = json.load(f)
             self.q_table = {eval(k): v for k, v in data.items()}
