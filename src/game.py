@@ -26,7 +26,7 @@ class Game:
         self.dealer.add_card(self.deck.deal())
         self.dealer.hidden_card = self.deck.deal()
 
-    def player_turn(self):
+    def player_turn(self) -> bool:
         while True:
             print(f"Your hand: {[str(card) for card in self.player.hand]}")
             print(f"Score: {self.player.get_score()}")
@@ -37,11 +37,11 @@ class Game:
             if action == "h":
                 self.player.add_card(self.deck.deal())
                 if self.player.get_score() > 21:
-                    print("Bust! You Lose.")
+                    print("Bust! You lose!")
                     print(f"Score: {self.player.get_score()}")
-                    break
+                    return True
             elif action == "s":
-                break
+                return False
             else:
                 print("Invalid input. Enter 'h' or 's'.")
 
@@ -49,18 +49,7 @@ class Game:
         self.dealer.reveal()
         print(f"Dealer hand: {[str(card) for card in self.dealer.hand]}")
 
-        if isinstance(self.dealer, AIDealer):
-            while True:
-                state = self.dealer.get_state(self.player.get_score())
-                action = self.dealer.choose_action(state)
-                if action == 0:
-                    break
-                self.dealer.add_card(self.deck.deal())
-                print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
-        else:
-            while self.dealer.should_hit():
-                self.dealer.add_card(self.deck.deal())
-                print(f"Dealer draws: {[str(card) for card in self.dealer.hand]}")
+        self.dealer.take_turn(self.deck, self.player.get_score())
 
     def resolve(self):
         player_score = self.player.get_score()
@@ -74,7 +63,7 @@ class Game:
         elif (
             player_score == 21
             and len(self.player.hand) == 2
-            and not (self.dealer.get_score() == 21 and len(self.dealer.hand) == 2)
+            and not (dealer_score == 21 and len(self.dealer.hand) == 2)
         ):
             print("Blackjack! You win x1.5!")
             self.player.win(1.5)

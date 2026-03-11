@@ -9,7 +9,7 @@ from ui import print_banner
 
 def main():
     print_banner()
-    name = input("Enter your name: ")
+    name = input("Enter your name: ").strip() or "Player"
     player = Player(name, 1000)
 
     while True:
@@ -19,7 +19,7 @@ def main():
             try:
                 bet = int(input("Place your bet: "))
                 if bet <= 0:
-                    print("bet must be greater than 0.")
+                    print("Bet must be greater than 0.")
                 elif bet > player.balance:
                     print(f"Not enough balance. Max bet: ${player.balance}")
                 else:
@@ -31,8 +31,9 @@ def main():
 
         game = Game(player)
         game.start_round()
-        game.player_turn()
-        game.dealer_turn()
+        busted = game.player_turn()
+        if not busted:
+            game.dealer_turn()
         game.resolve()
 
         if player.balance <= 0:

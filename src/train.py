@@ -7,11 +7,15 @@ from ai_dealer import AIDealer
 
 def train(episodes=10_000_000):
     ai = AIDealer()
+    player = Player("AI_opponent", 0)
 
     for _ in range(episodes):
+        if _ % 500_000 == 0:
+            print(f"Episode {_:,} / {episodes:,}  ε={ai.epsilon:.4f}")
+
         deck = Deck()
         deck.shuffle()
-        player = Player("Roman", 1000)
+        player.clear_hand()
 
         player.add_card(deck.deal())
         player.add_card(deck.deal())
@@ -21,7 +25,8 @@ def train(episodes=10_000_000):
         ai.hidden_card = deck.deal()
         ai.reveal()
 
-        state = ai.get_state(player.get_score())
+        player_score = player.get_score()
+        state = ai.get_state(player_score)
 
         while True:
             action = ai.choose_action(state)
@@ -30,9 +35,8 @@ def train(episodes=10_000_000):
             if action == 1:  # hit
                 ai.add_card(deck.deal())
 
-            next_state = ai.get_state(player.get_score())
+            next_state = ai.get_state(player_score)
             dealer_score = ai.get_score()
-            player_score = player.get_score()
 
             if dealer_score > 21:
                 reward = -1

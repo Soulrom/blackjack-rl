@@ -39,9 +39,20 @@ class AIDealer(Dealer):
 
         # update according to the formula
         current = self.q_table[state][action]
-        self.q_table[state][action] = self.q_table[state][action] + self.alpha * (
+        self.q_table[state][action] = current + self.alpha * (
             reward + self.gamma * next_max - current
         )
+
+    def take_turn(self, deck, player_score):
+        while True:
+            state = self.get_state(player_score)
+            action = self.choose_action(state)
+            if action == 0:
+                break
+            self.add_card(deck.deal())
+            print(f"Dealer draws: {[str(card) for card in self.hand]}")
+            if self.get_score() > 21:
+                break
 
     def decay_epsilon(self):
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
@@ -53,4 +64,8 @@ class AIDealer(Dealer):
     def load(self, path):
         with open(path, "r") as f:
             data = json.load(f)
-            self.q_table = {ast.literal_eval(k): v for k, v in data.items()}
+            self.q_table = {
+                ast.literal_eval(k): {int(a): q for a, q in v.items()}
+                for k, v in data.items()
+            }
+        self.epsilon = self.epsilon_min
