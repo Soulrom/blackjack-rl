@@ -27,8 +27,8 @@ class Player:
         return score
     
     def place_bet(self, amount):
-        self.bet += amount
+        self.bet = amount
         self.balance -= amount
     
     def win(self, multiplier):
-        self.balance += self.bet * multiplier
+        self.balance += self.bet + self.bet * multiplier

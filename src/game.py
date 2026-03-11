@@ -20,6 +20,7 @@ class Game:
         while True:
             print(f"Your hand: {[str(card) for card in self.player.hand]}")
             print(f"Score: {self.player.get_score()}")
+            print(f"Dealer shows: {str(self.dealer.hand[0])}")
 
             action = input("Hit or Stand? (h/s): ").lower()
 
@@ -27,6 +28,7 @@ class Game:
                 self.player.add_card(self.deck.deal())
                 if self.player.get_score() > 21:
                     print("Bust! You Lose.")
+                    print(f"Score: {self.player.get_score()}")
                     break
             elif action == 's':
                 break
