@@ -9,6 +9,8 @@ class Game:
 
     def start_round(self):
         self.deck.shuffle()
+        self.player.clear_hand()
+        self.dealer.clear_hand()
         self.player.add_card(self.deck.deal())
         self.player.add_card(self.deck.deal())
         self.dealer.add_card(self.deck.deal())
