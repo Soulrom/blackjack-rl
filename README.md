@@ -48,6 +48,7 @@ cd playing-with-cards
 ### Run
 
 ```bash
+cd src
 python main.py
 ```
 
@@ -77,12 +78,17 @@ python main.py
 ## 📁 Project Structure
 
 ```
-playing_with_cards/
-├── main.py       # CLI interface & game loop
-├── game.py       # Core game logic
-├── deck.py       # Card and Deck classes
-├── player.py     # Player class
-└── dealer.py     # Dealer class
+playing-with-cards/
+├── src/
+│   ├── main.py       # CLI interface & game loop
+│   ├── game.py       # Core game logic
+│   ├── deck.py       # Card and Deck classes
+│   ├── player.py     # Player class
+│   ├── dealer.py     # Dealer class
+│   └── ui.py         # ASCII banner
+├── LICENSE
+├── README.md
+└── requirements.txt
 ```
 
 ---
@@ -90,11 +96,11 @@ playing_with_cards/
 ## 🛣️ Roadmap
 
 - [x] Project setup
-- [ ] Deck & Card classes
-- [ ] Player logic
-- [ ] Dealer logic
-- [ ] Game loop
-- [ ] CLI interface
+- [x] Deck & Card classes
+- [x] Player logic
+- [x] Dealer logic
+- [x] Game loop
+- [x] CLI interface
 - [ ] AI dealer via Reinforcement Learning
 
 ---
