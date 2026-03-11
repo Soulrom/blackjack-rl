@@ -20,22 +20,22 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
 
-*A CLI Blackjack game written in Python. Future plans include an AI dealer powered by reinforcement learning.*
+*A CLI Blackjack game with a Q-learning AI dealer, written in Python.*
 
 </div>
 
 ---
 
-## 📖 About
+## About
 
-**Playing With Cards** is a terminal-based Blackjack game where you play against a dealer.
-Place bets, manage your balance, and try to beat the house — all from your terminal.
+**Playing With Cards** is a terminal-based Blackjack game where you play against an AI dealer trained using reinforcement learning. Place bets, manage your balance, and try to beat an opponent that learns from experience — all from your terminal.
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
+
 - Python 3.11+
 
 ### Installation
@@ -45,67 +45,61 @@ git clone https://github.com/Soulrom/playing-with-cards.git
 cd playing-with-cards
 ```
 
-### Run
+### Train the AI dealer
+
+The AI dealer requires a trained Q-table before playing. Run the training script once:
 
 ```bash
 cd src
+python train.py
+```
+
+Training runs 2 million episodes and saves the Q-table to `models/q_table.json`.
+
+### Play
+
+```bash
 python main.py
 ```
 
 ---
 
-## 🕹️ How to Play
+## How to Play
 
 1. Enter your name
 2. Place a bet
-3. Choose your action:
-   - `hit` — take another card
-   - `stand` — stop and let the dealer play
-4. Try to get closer to **21** than the dealer without going over
-5. Dealer draws cards until score ≥ 17
+3. On your turn, choose:
+   - `h` — hit (take another card)
+   - `s` — stand (end your turn)
+4. Get closer to **21** than the dealer without going over
+5. The AI dealer plays automatically based on its trained strategy
 
 ### Payouts
 
 | Result | Payout |
 |--------|--------|
-| Win | +bet |
-| Blackjack (21 from 2 cards) | +bet × 1.5 |
-| Lose | −bet |
-| Draw | bet returned |
+| Win | `+bet` |
+| Blackjack | `+bet × 1.5` |
+| Lose | `−bet` |
+| Draw | `bet returned` |
 
 ---
 
-## 📁 Project Structure
+## AI Dealer
 
-```
-playing-with-cards/
-├── src/
-│   ├── main.py       # CLI interface & game loop
-│   ├── game.py       # Core game logic
-│   ├── deck.py       # Card and Deck classes
-│   ├── player.py     # Player class
-│   ├── dealer.py     # Dealer class
-│   └── ui.py         # ASCII banner
-├── LICENSE
-├── README.md
-└── requirements.txt
-```
+The dealer is powered by **Q-learning** — a model-free reinforcement learning algorithm. During training, the agent plays millions of games and learns which actions (hit or stand) maximize its long-term reward.
+
+| Parameter | Value |
+|-----------|-------|
+| Algorithm | Q-learning |
+| Episodes | 2,000,000 |
+| State space | `(dealer_score, player_score, has_ace)` |
+| Actions | `hit` / `stand` |
+| Exploration | ε-greedy (`ε` from `1.0` → `0.05`) |
 
 ---
 
-## 🛣️ Roadmap
-
-- [x] Project setup
-- [x] Deck & Card classes
-- [x] Player logic
-- [x] Dealer logic
-- [x] Game loop
-- [x] CLI interface
-- [ ] AI dealer via Reinforcement Learning
-
----
-
-## 📄 License
+## License
 
 Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
 
