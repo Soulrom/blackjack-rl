@@ -20,15 +20,20 @@ def train(episodes=5_000_000):
         player.add_card(deck.deal())
         player.add_card(deck.deal())
 
-        while player.get_score() < random.randint(15, 21):
+        threshold = random.randint(12, 21)
+        while player.get_score() < threshold:
             player.add_card(deck.deal())
+
+        player_score = player.get_score()
+        if player_score > 21:
+            ai.decay_epsilon()
+            continue
 
         ai.clear_hand()
         ai.add_card(deck.deal())
         ai.hidden_card = deck.deal()
         ai.reveal()
 
-        player_score = player.get_score()
         state = ai.get_state(player_score)
 
         while True:
