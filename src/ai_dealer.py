@@ -43,14 +43,15 @@ class AIDealer(Dealer):
             reward + self.gamma * next_max - current
         )
 
-    def take_turn(self, deck, player_score):
+    def take_turn(self, deck, player_score, on_draw=None):
         while True:
             state = self.get_state(player_score)
             action = self.choose_action(state)
             if action == 0:
                 break
             self.add_card(deck.deal())
-            print(f"Dealer draws: {[str(card) for card in self.hand]}")
+            if on_draw:
+                on_draw(self.hand)
             if self.get_score() > 21:
                 break
 

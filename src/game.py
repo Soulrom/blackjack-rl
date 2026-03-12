@@ -30,13 +30,8 @@ class Game:
     def check_blackjack(self) -> bool:
         player_blackjack = self.player.get_score() == 21 and len(self.player.hand) == 2
 
-        # Peek at dealer's full two-card score without permanently revealing
-        hidden = self.dealer.hidden_card
-        if hidden:
-            self.dealer.hand.append(hidden)
-        dealer_blackjack = self.dealer.get_score() == 21 and len(self.dealer.hand) == 2
-        if hidden:
-            self.dealer.hand.pop()
+        dealer_card_count = len(self.dealer.hand) + (1 if self.dealer.hidden_card else 0)
+        dealer_blackjack = self.dealer.peek_score() == 21 and dealer_card_count == 2
 
         if player_blackjack and dealer_blackjack:
             self.dealer.reveal()
@@ -76,7 +71,11 @@ class Game:
         self.dealer.reveal()
         print(f"Dealer hand: {[str(card) for card in self.dealer.hand]}")
 
-        self.dealer.take_turn(self.deck, self.player.get_score())
+        self.dealer.take_turn(
+            self.deck,
+            self.player.get_score(),
+            on_draw=lambda hand: print(f"Dealer draws: {[str(card) for card in hand]}"),
+        )
 
     def resolve(self):
         player_score = self.player.get_score()

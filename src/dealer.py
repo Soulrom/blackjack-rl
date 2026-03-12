@@ -15,10 +15,19 @@ class Dealer(Hand):
             self.hand.append(self.hidden_card)
             self.hidden_card = None
 
+    def peek_score(self):
+        if self.hidden_card is not None:
+            self.hand.append(self.hidden_card)
+            score = self.get_score()
+            self.hand.pop()
+            return score
+        return self.get_score()
+
     def should_hit(self):
         return self.get_score() < 17
 
-    def take_turn(self, deck, _player_score):
+    def take_turn(self, deck, _player_score, on_draw=None):
         while self.should_hit():
             self.add_card(deck.deal())
-            print(f"Dealer draws: {[str(card) for card in self.hand]}")
+            if on_draw:
+                on_draw(self.hand)
