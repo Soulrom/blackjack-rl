@@ -43,8 +43,8 @@ Choose between a **standard dealer** that follows fixed rules, or an **AI dealer
 ### Installation
 
 ```bash
-git clone https://github.com/Soulrom/playing-with-cards.git
-cd playing-with-cards/src
+git clone https://github.com/Soulrom/blackjack-rl.git
+cd blackjack-rl/src
 ```
 
 ### Play
