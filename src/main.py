@@ -9,8 +9,20 @@ from ui import print_banner
 
 def main():
     print_banner()
+
     name = input("Enter your name: ").strip() or "Player"
     player = Player(name, 1000)
+
+    while True:
+        ai_choice = input("Do you want to play against AI Dealer? (y/n): ").strip().lower()
+        if ai_choice == "y":
+            game = Game(player, use_ai=True)
+            break
+        elif ai_choice == "n":
+            game = Game(player)
+            break
+        else:
+            print("Invalid input. Enter 'y' or 'n'.")
 
     while True:
         print(f"\nBalance: ${player.balance}")
@@ -29,13 +41,12 @@ def main():
 
         player.place_bet(bet)
 
-        game = Game(player, use_ai=True)  # player, use_ai=True
         game.start_round()
         if not game.check_blackjack():
             busted = game.player_turn()
             if not busted:
                 game.dealer_turn()
-            game.resolve()
+                game.resolve()
 
         if player.balance <= 0:
             print("Game over! No balance left.")

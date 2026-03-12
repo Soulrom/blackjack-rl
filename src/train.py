@@ -5,13 +5,13 @@ from player import Player
 from ai_dealer import AIDealer
 
 
-def train(episodes=2_000_000):
+def train(episodes=5_000_000):
     ai = AIDealer()
     player = Player("AI_opponent", 0)
 
-    for _ in range(episodes):
-        if _ % 500_000 == 0:
-            print(f"Episode {_:,} / {episodes:,}  ε={ai.epsilon:.4f}")
+    for episode in range(episodes):
+        if episode % 500_000 == 0:
+            print(f"Episode {episode:,} / {episodes:,}  ε={ai.epsilon:.4f}")
 
         deck = Deck()
         deck.shuffle()

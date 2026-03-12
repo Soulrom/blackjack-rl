@@ -9,8 +9,8 @@ class AIDealer(Dealer):
     def __init__(self):
         super().__init__()
         self.q_table = {}
-        self.alpha = 0.1
-        self.gamma = 0.9
+        self.alpha = 0.05
+        self.gamma = 0.95
         self.epsilon = 1.0
         self.epsilon_min = 0.05
         self.epsilon_decay = 0.999997
@@ -68,4 +68,4 @@ class AIDealer(Dealer):
                 ast.literal_eval(k): {int(a): q for a, q in v.items()}
                 for k, v in data.items()
             }
-        self.epsilon = self.epsilon_min
+        self.epsilon = 0.0

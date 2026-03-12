@@ -18,6 +18,7 @@ class Game:
             self.dealer = Dealer()
 
     def start_round(self):
+        self.deck = Deck()
         self.deck.shuffle()
         self.player.clear_hand()
         self.dealer.clear_hand()
@@ -28,7 +29,14 @@ class Game:
 
     def check_blackjack(self) -> bool:
         player_blackjack = self.player.get_score() == 21 and len(self.player.hand) == 2
+
+        # Peek at dealer's full two-card score without permanently revealing
+        hidden = self.dealer.hidden_card
+        if hidden:
+            self.dealer.hand.append(hidden)
         dealer_blackjack = self.dealer.get_score() == 21 and len(self.dealer.hand) == 2
+        if hidden:
+            self.dealer.hand.pop()
 
         if player_blackjack and dealer_blackjack:
             self.dealer.reveal()
@@ -40,6 +48,10 @@ class Game:
             print("Blackjack! You win x1.5!")
             self.player.win(1.5)
             return True
+        elif dealer_blackjack:
+            self.dealer.reveal()
+            print("Dealer has Blackjack! You lose!")
+            return True
         return False
 
     def player_turn(self) -> bool:
@@ -48,13 +60,12 @@ class Game:
             print(f"Score: {self.player.get_score()}")
             print(f"Dealer shows: {str(self.dealer.hand[0])}")
 
-            action = input("Hit or Stand? (h/s): ").lower()
+            action = input("Hit or Stand? (h/s): ").strip().lower()
 
             if action == "h":
                 self.player.add_card(self.deck.deal())
                 if self.player.get_score() > 21:
-                    print("Bust! You lose!")
-                    print(f"Score: {self.player.get_score()}")
+                    print(f"Bust! Score: {self.player.get_score()}")
                     return True
             elif action == "s":
                 return False

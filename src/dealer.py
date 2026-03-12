@@ -13,6 +13,7 @@ class Dealer(Hand):
     def reveal(self):
         if self.hidden_card is not None:
             self.hand.append(self.hidden_card)
+            self.hidden_card = None
 
     def should_hit(self):
         return self.get_score() < 17
