@@ -6,7 +6,7 @@ from ai_dealer import AIDealer
 class Game:
     def __init__(self, player, use_ai=False):
         self.player = player
-        self.deck = Deck()
+        self.deck = None
 
         if use_ai:
             self.dealer = AIDealer()
@@ -82,9 +82,7 @@ class Game:
         player_score = self.player.get_score()
         dealer_score = self.dealer.get_score()
 
-        if player_score > 21:
-            print("You lose!")
-        elif dealer_score > 21:
+        if dealer_score > 21:
             print("You win!")
             self.player.win(1)
         elif player_score > dealer_score:

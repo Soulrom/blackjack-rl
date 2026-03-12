@@ -1,20 +1,20 @@
 import sys
-
-sys.stdout.reconfigure(encoding="utf-8")
-
 from player import Player
 from game import Game
 from ui import print_banner
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8")
     print_banner()
 
     name = input("Enter your name: ").strip() or "Player"
     player = Player(name, 1000)
 
     while True:
-        ai_choice = input("Do you want to play against AI Dealer? (y/n): ").strip().lower()
+        ai_choice = (
+            input("Do you want to play against AI Dealer? (y/n): ").strip().lower()
+        )
         if ai_choice == "y":
             game = Game(player, use_ai=True)
             break
@@ -52,7 +52,11 @@ def main():
             print("Game over! No balance left.")
             break
 
-        again = input("Play again? (y/n): ").lower()
+        while True:
+            again = input("Play again? (y/n): ").strip().lower()
+            if again in ("y", "n"):
+                break
+            print("Invalid input. Enter 'y' or 'n'.")
         if again != "y":
             break
 

@@ -13,7 +13,7 @@ class AIDealer(Dealer):
         self.gamma = 0.95
         self.epsilon = 1.0
         self.epsilon_min = 0.05
-        self.epsilon_decay = 0.999997
+        self.epsilon_decay = 0.999999
 
     def get_state(self, player_score):
         has_ace = any(card.value == "A" for card in self.hand)
@@ -24,7 +24,7 @@ class AIDealer(Dealer):
             return random.choice([0, 1])
         if state in self.q_table:
             return max(self.q_table[state], key=self.q_table[state].get)
-        return random.choice([0, 1])
+        return 1 if self.get_score() < 17 else 0
 
     def update(self, state, action, reward, next_state):
         # if the state is not in the table, create {0: 0.0, 1: 0.0}
@@ -62,10 +62,13 @@ class AIDealer(Dealer):
             json.dump({str(k): v for k, v in self.q_table.items()}, f)
 
     def load(self, path):
-        with open(path, "r") as f:
-            data = json.load(f)
-            self.q_table = {
-                ast.literal_eval(k): {int(a): q for a, q in v.items()}
-                for k, v in data.items()
-            }
+        try:
+            with open(path, "r") as f:
+                data = json.load(f)
+                self.q_table = {
+                    ast.literal_eval(k): {int(a): q for a, q in v.items()}
+                    for k, v in data.items()
+                }
+        except json.JSONDecodeError:
+            print("Warning: q_table.json is corrupted. Run train.py again!")
         self.epsilon = 0.0
