@@ -208,3 +208,6 @@ __marimo__/
 
 # ML models
 models/q_table.json
+
+# Claude Code
+.claude/

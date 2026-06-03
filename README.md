@@ -18,7 +18,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Status](https://img.shields.io/badge/Status-Actively%20Improved-blue?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Playable-blue?style=flat-square)
 
 *A CLI Blackjack game with a standard dealer and an AI dealer powered by Q-learning.*
 
@@ -108,5 +108,3 @@ Q(s, a) ← Q(s, a) + α · (r + γ · max Q(s') − Q(s, a))
 ## License
 
 Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
-
-© 2026 Roman Mokrii
