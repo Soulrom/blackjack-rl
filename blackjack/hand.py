@@ -22,3 +22,6 @@ class Hand:
             aces -= 1
 
         return score
+
+    def format(self):
+        return [str(card) for card in self.hand]

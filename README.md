@@ -44,16 +44,15 @@ Choose between a **standard dealer** that follows fixed rules, or an **AI dealer
 
 ```bash
 git clone https://github.com/Soulrom/blackjack-rl.git
-cd blackjack-rl/src
+cd blackjack-rl
+pip install -e .
 ```
 
 ### Play
 
 ```bash
-python main.py
+blackjack
 ```
-
-> **Note:** The game must be run from the `src/` directory.
 
 ---
 
@@ -62,7 +61,7 @@ python main.py
 The AI dealer uses a Q-learning agent trained on 5 million episodes. Before selecting the AI dealer mode, run the training script once to generate the Q-table:
 
 ```bash
-python train.py
+blackjack-train
 ```
 
 Training takes a few minutes and saves the model to `models/q_table.json`.

@@ -1,4 +1,4 @@
-from hand import Hand
+from .hand import Hand
 
 
 class Player(Hand):
@@ -12,5 +12,5 @@ class Player(Hand):
         self.bet = amount
         self.balance -= amount
 
-    def win(self, multiplier):
+    def settle_bet(self, multiplier):
         self.balance += self.bet + self.bet * multiplier

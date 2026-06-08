@@ -1,8 +1,10 @@
-import os
 import random
-from deck import Deck
-from player import Player
-from ai_dealer import AIDealer
+from pathlib import Path
+from .deck import Deck
+from .player import Player
+from .ai_dealer import AIDealer
+
+_MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "q_table.json"
 
 
 def train(episodes=5_000_000):
@@ -63,8 +65,8 @@ def train(episodes=5_000_000):
             state = next_state
         ai.decay_epsilon()
 
-    os.makedirs("../models", exist_ok=True)
-    ai.save("../models/q_table.json")
+    _MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    ai.save(_MODEL_PATH)
     print(f"Training complete! States learned: {len(ai.q_table)}")
 
 

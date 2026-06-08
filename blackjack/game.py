@@ -1,6 +1,9 @@
-from deck import Deck
-from dealer import Dealer
-from ai_dealer import AIDealer
+from pathlib import Path
+from .deck import Deck
+from .dealer import Dealer
+from .ai_dealer import AIDealer
+
+_MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "q_table.json"
 
 
 class Game:
@@ -11,7 +14,7 @@ class Game:
         if use_ai:
             self.dealer = AIDealer()
             try:
-                self.dealer.load("../models/q_table.json")
+                self.dealer.load(_MODEL_PATH)
             except FileNotFoundError:
                 print("Warning: q_table.json not found. Run train.py first!")
         else:
@@ -35,23 +38,26 @@ class Game:
 
         if player_blackjack and dealer_blackjack:
             self.dealer.reveal()
+            print(f"Dealer hand: {self.dealer.format()}")
             print("Both have Blackjack! Draw!")
-            self.player.win(0)
+            self.player.settle_bet(0)
             return True
         elif player_blackjack:
             self.dealer.reveal()
+            print(f"Dealer hand: {self.dealer.format()}")
             print("Blackjack! You win x1.5!")
-            self.player.win(1.5)
+            self.player.settle_bet(1.5)
             return True
         elif dealer_blackjack:
             self.dealer.reveal()
+            print(f"Dealer hand: {self.dealer.format()}")
             print("Dealer has Blackjack! You lose!")
             return True
         return False
 
     def player_turn(self) -> bool:
         while True:
-            print(f"Your hand: {[str(card) for card in self.player.hand]}")
+            print(f"Your hand: {self.player.format()}")
             print(f"Score: {self.player.get_score()}")
             print(f"Dealer shows: {str(self.dealer.hand[0])}")
 
@@ -69,12 +75,12 @@ class Game:
 
     def dealer_turn(self):
         self.dealer.reveal()
-        print(f"Dealer hand: {[str(card) for card in self.dealer.hand]}")
+        print(f"Dealer hand: {self.dealer.format()}")
 
         self.dealer.take_turn(
             self.deck,
             self.player.get_score(),
-            on_draw=lambda hand: print(f"Dealer draws: {[str(card) for card in hand]}"),
+            on_draw=lambda hand: print(f"Dealer draws: {self.dealer.format()}"),
         )
 
     def resolve(self):
@@ -83,12 +89,12 @@ class Game:
 
         if dealer_score > 21:
             print("You win!")
-            self.player.win(1)
+            self.player.settle_bet(1)
         elif player_score > dealer_score:
             print("You win!")
-            self.player.win(1)
+            self.player.settle_bet(1)
         elif player_score < dealer_score:
             print("You lose!")
         else:
             print("Draw!")
-            self.player.win(0)
+            self.player.settle_bet(0)

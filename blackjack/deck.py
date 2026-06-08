@@ -32,4 +32,6 @@ class Deck:
         random.shuffle(self.cards)
 
     def deal(self):
+        if not self.cards:
+            raise IndexError("Deck is empty")
         return self.cards.pop()

@@ -1,7 +1,7 @@
 import sys
-from player import Player
-from game import Game
-from ui import print_banner
+from .player import Player
+from .game import Game
+from .ui import print_banner
 
 
 def main():

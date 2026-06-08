@@ -1,8 +1,7 @@
 import random
 import json
-import ast
 
-from dealer import Dealer
+from .dealer import Dealer
 
 
 class AIDealer(Dealer):
@@ -60,16 +59,16 @@ class AIDealer(Dealer):
 
     def save(self, path):
         with open(path, "w") as f:
-            json.dump({str(k): v for k, v in self.q_table.items()}, f)
+            json.dump({json.dumps(list(k)): v for k, v in self.q_table.items()}, f)
 
     def load(self, path):
         try:
             with open(path, "r") as f:
                 data = json.load(f)
                 self.q_table = {
-                    ast.literal_eval(k): {int(a): q for a, q in v.items()}
+                    tuple(json.loads(k)): {int(a): q for a, q in v.items()}
                     for k, v in data.items()
                 }
+            self.epsilon = 0.0
         except json.JSONDecodeError:
             print("Warning: q_table.json is corrupted. Run train.py again!")
-        self.epsilon = 0.0
